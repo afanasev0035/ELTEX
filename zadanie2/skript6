@@ -1,0 +1,79 @@
+#!/bin/bash
+
+copy() 
+{ 
+sudo rtcwake -m on -t $date
+for i in ${myArray[@]}
+do
+w=$(cut -b 3- <<< "$i")
+dd if=$i of=$rasp/bacup_$w
+done
+
+dat=$(date --date='today' +%m_%d)
+tar -cf backup_$dat.tar $rasp
+mv backup_"$dat".tar $rasp
+sleep 10
+date=$(date -d "`date +%m/%d/%y` $h:$m tomorrow" +%s )
+
+copy
+}
+
+copy1() 
+{
+sleep $time
+for i in ${myArray[@]}
+do
+w=$(cut -b 3- <<< "$i")
+dd if=$i of=$rasp/bacup_$w
+done
+dat=$(date --date='today' +%m_%d)
+tar -cf backup_$dat.tar $rasp
+mv backup_"$dat".tar $rasp
+copy1
+}
+
+echo 'Введите расположение файла для бэкапа,  для останова ввода введите "stop"'
+read w
+
+while [ $w != "stop" ]
+do
+myArray+=( "$w" ) 
+echo 'Введите расположение файла для бэкапа, для останова ввода введите "stop"'
+read w
+done
+
+echo 'Введите гдебудет располагаться бэкапп'
+read rasp
+
+
+echo '-----------------------------------------------------------------'
+echo ' Выберите 1 - если копирование через интервал времени'
+echo ' Выберите 2 - если копирование в определенное время'
+read rezhim
+data=0
+time=0
+if [ $rezhim == 1 ] 
+then 
+{
+echo ' Укажите интервал времени h - через сколько часов m - через сколько минут'
+echo 'Введите через сколько часов'
+declare -i h=''
+read h
+echo 'Введите через сколько минут'
+declare -i m=''
+read m
+declare -i time=''
+time=(h*60+m)*60 
+copy1
+}
+else 
+{
+echo ' Укажите во сколько часов h, во сколько минут m'
+echo 'Введите во сколько часов'
+read h
+echo 'Введите во сколько минут'
+read m
+date=$(date -d "`date +%m/%d/%y` $h:$m" +%s )
+copy
+}
+fi

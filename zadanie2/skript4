@@ -1,0 +1,35 @@
+#!/bin/bash
+echo 'Введите имя процесса, которое хотите перезапускать'
+read process
+echo 'Введите время через которое программа будет перезапускаться в секунда'
+read time
+qqq()
+{
+
+	if [ $(ps aux | grep $process | wc -l) -eq 1 ]
+then 
+{	
+	firefox&
+	echo "Запускаю процесс $process" 
+	sleep $time
+	./sk > /dev/null 2>&1 &
+	
+}
+else 
+{
+	echo "Firefox запущен"
+	sleep $time
+	./sk > /dev/null 2>&1 &
+	
+}
+fi;
+}
+
+qqq
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+#!/bin/bash
+echo "Введите директорию, где будут созданы папки"
+read name
+echo "Введите желаемое имя папок"
+read name1
+echo "Введите желаемое кол-во папок"
+read i
+echo "Введите желаемое имя подпапок"
+read name2
+echo "Введите желаемое кол-во подпапок"
+read j
+echo "Введите желаемое имя файлов"
+read name3
+echo "Введите желаемое кол-во файлов"
+read k
+
+for((q=0;q<i;q++))
+do
+mkdir -p $name/$name1$q
+for((w=0;w<j;w++))
+do
+mkdir -p $name/$name1$q/$name2$w
+done
+done
+
+for((q=0;q<i;q++))
+do
+for((w=0;w<j;w++))
+do
+cd $name/$name1$q/$name2$w
+for((e=0;e<k;e++))
+do
+touch $name3$e
+done
+cd ~
+done
+done
+

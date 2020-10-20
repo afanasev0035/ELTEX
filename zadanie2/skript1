@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir -p king/qeen{1..50}/valet{1..100}
+
+for i in {1..50}
+do
+for j in {1..100}
+do
+cd king/qeen$i/valet$j
+touch file{1..200}
+cd ~
+done
+done

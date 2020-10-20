@@ -1,0 +1,22 @@
+#! /bin/bash
+
+echo -n "Какого числа Вас этого месяца разбудить?"
+read day
+
+
+echo -n "Во сколько часов подъем?"
+read h
+
+echo -n "Во сколько минут Вас разбудить?"
+declare -i m=''
+read m
+
+date=$(date -d "`date +%m/$day/%y` $h:$m" +%s )
+
+sudo rtcwake -m on -t $date
+
+aplay alarm.wav #файл должен располагаться в домашней папке
+
+echo -n "Для выхода закройте терминал"
+
+
